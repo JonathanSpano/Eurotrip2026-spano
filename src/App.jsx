@@ -139,7 +139,7 @@ const DAYS = [
       { id: "m13", time: "12:15", type: "transporte", place: "✈️ Vuelo Madrid → Florencia · 14:30 T4", zone: "Barajas T4 · Madrid", note: "Llegar 2h antes. Iberia/Vueling desde T4. Piero y Emma: snacks en bolso de mano. Llegada GRS ~17:00.", essential: true, carriola: true, effort: "medio", needsReserve: false, walkMinsToNext: null },
       { id: "f1", time: "17:30", type: "checkin", place: "Residenza Alessandra", zone: "Borgo SS. Apostoli · Florencia", note: "Check-in. Calle tranquila pese a estar en el corazón de todo. Solicitar cuna para Piero.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 3 },
       { id: "f2", time: "18:00", type: "paseo", place: "Lungarno Acciaiuoli → Ponte Vecchio", zone: "Lungarno", note: "Calle que bordea el río. Amplia, plana, ideal carriola. Mejor vista del Ponte Vecchio al atardecer.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5, altActivities: ["Ponte Santa Trinita", "Piazza della Repubblica"] },
-      { id: "f3", time: "20:00", type: "comida", place: "Osteria del Cinghiale Bianco", zone: "Oltrarno", note: "3 min del hotel cruzando el río. Auténtica, sin filtro turístico.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
+      { id: "f3", time: "20:00", type: "comida", place: "Osteria del Cinghiale Bianco", zone: "Oltrarno", note: "7-8 min del hotel cruzando el Arno por el Ponte Vecchio. Auténtica, sin filtro turístico.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
     ]
   },
   {
@@ -149,11 +149,11 @@ const DAYS = [
     tip: "Museo dell'Opera tiene reserva 11:30. No pedir cappuccino después de las 11 (ley italiana).",
     activities: [
       { id: "f4", time: "09:00", type: "comida", place: "Ditta Artigianale o bar de barrio", zone: "Centro", note: "Cornetto + cappuccino. No pedir cappuccino después de las 11.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 10 },
-      { id: "f5", time: "11:30", type: "monumento", place: "Museo dell'Opera del Duomo", zone: "Duomo", note: "Ver el David de Donatello (el original). GHIBERTI PASS — Santa Reparata 11:30 EXACTO (horario fijo, irrenunciable). Acceso Baptistero: Puerta Norte. Museo: Piazza Duomo 9. ⚠️ SIN MOCHILAS — guardarlas en Piazza Duomo 38/r.", bookingRef: "87-I2L8Z8Z · SPNY4S4ESFWA", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 8 },
+      { id: "f5", time: "11:30", type: "monumento", place: "Museo dell'Opera del Duomo", zone: "Duomo", note: "GHIBERTI PASS — Santa Reparata 11:30 EXACTO (horario fijo, irrenunciable). Acceso Baptistero: Puerta Norte. Museo: Piazza Duomo 9. ⚠️ SIN MOCHILAS — guardarlas en Piazza Duomo 38/r. Nota: el David de Donatello está en el Bargello (Via del Proconsolo 4, ~€8, 10 min a pie) — si sobra tiempo antes o después vale la visita.", bookingRef: "87-I2L8Z8Z · SPNY4S4ESFWA", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 8 },
       { id: "f6", time: "13:00", type: "kids", place: "Fontana del Porcellino — Mercato Nuovo", zone: "Centro", note: "Emma frota el hocico al jabalí de bronce y pone moneda: asegura regreso a Florencia.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 12 },
       { id: "f7", time: "13:30", type: "comida", place: "Mercado de Sant'Ambrogio — Da Rocco", zone: "Sant'Ambrogio", note: "Trabajadores locales, comer de pie o en banquito, pasta del día. Lo más auténtico.", essential: false, carriola: false, effort: "bajo", needsReserve: false, walkMinsToNext: 15, altRestaurants: ["Trattoria da Ruggero", "Buca dell'Orafo"] },
       { id: "f8", time: "15:30", type: "paseo", place: "Barrio de Dante — callejuelas s.XIII", zone: "Centro Storico", note: "Emma busca 'escudos de piedra' en las paredes. Torre della Castagna.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 20, altActivities: ["Via de' Tornabuoni", "Piazza della Repubblica"] },
-      { id: "f9", time: "20:00", type: "comida", place: "Trattoria Sostanza", zone: "Santa Maria Novella", note: "HISTÓRICO (1869). Solo efectivo. Bistecca o burro di acciughe. Llegar puntual.", essential: true, carriola: false, effort: "bajo", needsReserve: true, walkMinsToNext: null },
+      { id: "f9", time: "20:00", type: "comida", place: "Trattoria Sostanza", zone: "Santa Maria Novella", note: "HISTÓRICO (1869). Solo efectivo. Pedir taglierini al burro o pollo al burro — los platos firma de la casa. Llegar puntual.", essential: true, carriola: false, effort: "bajo", needsReserve: true, walkMinsToNext: null },
     ]
   },
   {
@@ -242,6 +242,17 @@ const DAYS = [
   {
     date: "2026-03-30",
     city: "Val d'Orcia", phase: "Val d'Orcia",
+    title: "Bagno Vignoni + Granja de Emma",
+    tip: "Podere Il Casale: reservar ANTES tour de granja + cena. Los cupos son limitados.",
+    activities: [
+      { id: "v19", time: "10:30", type: "paseo", place: "Bagno Vignoni — Plaza Termal", zone: "Bagno Vignoni", note: "La plaza central ES una piscina termal de 2000 años. Parco dei Mulini: molinos en la roca.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5 },
+      { id: "v20", time: "13:00", type: "comida", place: "Bistrot Languorino", zone: "Bagno Vignoni", note: "Cocina de territorio, vista al valle.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null, altRestaurants: ["Osteria del Leone", "La Bottega di Cacio (barato)"] },
+
+    ]
+  },
+  {
+    date: "2026-03-31",
+    city: "Val d'Orcia", phase: "Val d'Orcia",
     title: "Siena — Inmersión Total (Día y Noche)",
     tip: "El momento mágico es a las 18:30 en la Piazza del Campo: sentarse en el suelo como los locales.",
     activities: [
@@ -254,7 +265,7 @@ const DAYS = [
     ]
   },
   {
-    date: "2026-03-31",
+    date: "2026-04-01",
     city: "Val d'Orcia", phase: "Val d'Orcia",
     title: "Montepulciano + Atardecer en la Z",
     tip: "🚨 Portabebé obligatorio en Montepulciano. Las subidas son intensas.",
@@ -263,20 +274,8 @@ const DAYS = [
       { id: "v14", time: "11:00", type: "cultura", place: "Cantina Redi — Subterránea", zone: "Montepulciano", note: "Una catedral bajo tierra. Uno de los espacios más impresionantes del viaje.", essential: false, carriola: false, effort: "bajo", needsReserve: false, walkMinsToNext: 10 },
       { id: "v15", time: "13:00", type: "comida", place: "La Vineria — Montepulciano", zone: "Montepulciano", note: "Vino Nobile de Montepulciano. Pedir el pici al cinghiale.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 20, altRestaurants: ["Osteria Acquacheta (carne)", "Porta di Bacco"] },
       { id: "v16", time: "15:00", type: "kids", place: "Templo de San Biagio — Prados abiertos", zone: "Montepulciano base", note: "Al pie del pueblo. Grandes prados para que Emma corra sin límites.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 15 },
-      { id: "v17", time: "18:30", type: "mirador", place: "Monticchiello — Cipreses en Z", zone: "Monticchiello", note: "La carretera de cipreses más famosa de la Toscana vista desde las murallas.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5 },
-      { id: "v18", time: "20:00", type: "comida", place: "Osteria La Porta — Monticchiello", zone: "Monticchiello", note: "Pedir MESA CON VISTA ('tavolo con vista'). Luces del valle de noche.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
-    ]
-  },
-  {
-    date: "2026-04-01",
-    city: "Val d'Orcia", phase: "Val d'Orcia",
-    title: "Bagno Vignoni + Granja de Emma",
-    tip: "Podere Il Casale: reservar ANTES tour de granja + cena. Los cupos son limitados.",
-    activities: [
-      { id: "v19", time: "10:30", type: "paseo", place: "Bagno Vignoni — Plaza Termal", zone: "Bagno Vignoni", note: "La plaza central ES una piscina termal de 2000 años. Parco dei Mulini: molinos en la roca.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5 },
-      { id: "v20", time: "13:00", type: "comida", place: "Bistrot Languorino", zone: "Bagno Vignoni", note: "Cocina de territorio, vista al valle.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null, altRestaurants: ["Osteria del Leone", "La Bottega di Cacio (barato)"] },
       { id: "v21", time: "16:30", type: "kids", place: "Podere Il Casale — Granja biológica", zone: "Pienza", note: "Emma ve pavos reales, cabras y cerdos. Ustedes: cata de Pecorino frente al valle.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
-      { id: "v22", time: "18:00", type: "descanso", place: "Regreso al hotel — Reset familiar", zone: "Val d'Orcia", note: "Noche de descanso intencional.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
+      { id: "v22", time: "19:30", type: "comida", place: "Cena en Podere Il Casale", zone: "Pienza", note: "Cenar en el mismo lugar del tour. Pecorino propio, vinos de la granja, vista al valle. Regreso al hotel ~20 min.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
     ]
   },
   {
@@ -285,7 +284,7 @@ const DAYS = [
     title: "Sant'Antimo + Montalcino + Brunello",
     tip: "Sant'Antimo a las 11:00 para chance de escuchar cantos gregorianos. Experiencia de profundidad inmensa.",
     activities: [
-      { id: "v23", time: "11:00", type: "cultura", place: "Abadía de Sant'Antimo", zone: "Castelnuovo Abate", note: "Iglesia románica solitaria rodeada de olivos. Con suerte: cantos gregorianos en vivo.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
+      { id: "v23", time: "11:00", type: "cultura", place: "Abadía de Sant'Antimo", zone: "Castelnuovo Abate", note: "Iglesia románica solitaria rodeada de olivos — uno de los espacios más serenos del viaje. ⚠️ La comunidad de monjes abandonó la abadía ~2015, ya no hay cantos gregorianos regulares. Vale la visita por la arquitectura y el silencio.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
       { id: "v24", time: "13:00", type: "comida", place: "Bottega di Portanuova — San Quirico", zone: "San Quirico", note: "O almorzar en Montalcino antes de subir a la fortaleza.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
       { id: "v25", time: "15:00", type: "paseo", place: "Montalcino — Fortezza + Murallas", zone: "Montalcino", note: "Caminar los muros de la fortaleza. Backup: Horti Leonini (laberinto de arbustos, gratis).", essential: false, carriola: false, effort: "medio", needsReserve: false, walkMinsToNext: 10 },
       { id: "v26", time: "20:00", type: "comida", place: "Porta al Cassero — Montalcino", zone: "Montalcino", note: "Pedir un Brunello de alto nivel. La cena más sofisticada del viaje.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null, altRestaurants: ["Re di Macchia (cinghiale)", "Locanda Franci"] },
@@ -295,14 +294,14 @@ const DAYS = [
     date: "2026-04-03",
     city: "Val d'Orcia", phase: "Val d'Orcia",
     title: "Íconos + Procesión de Viernes Santo",
-    tip: "Procesión degli Scalzi a las 21:00 en Pienza: antorchas, silencio, encapuchados. Cenar antes.",
+    tip: "Procesión degli Scalzi a las 21:00 en Monticchiello: antorchas, silencio, encapuchados. Cenar antes en Pienza y llegar a Monticchiello a las 20:45.",
     activities: [
       { id: "v27", time: "09:00", type: "mirador", place: "Cipreses de San Quirico — Círculo perfecto", zone: "San Quirico", note: "La foto más icónica de la Toscana. Llegár temprano para luz suave.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 10 },
       { id: "v28", time: "10:00", type: "mirador", place: "Capilla de Vitaleta", zone: "Val d'Orcia", note: "La iglesia pequeña más famosa del mundo. Foto obligatoria.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
       { id: "v29", time: "13:00", type: "comida", place: "La Grotta — Radicofani", zone: "Radicofani", note: "El pueblo menos turístico del itinerario. La Italia real.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 10 },
       { id: "v30", time: "15:00", type: "paseo", place: "Radicofani — La Rocca", zone: "Radicofani", note: "La fortaleza más alta del sur. Sin turistas.", essential: false, carriola: false, effort: "medio", needsReserve: false, walkMinsToNext: null },
       { id: "v31", time: "19:30", type: "comida", place: "Trattoria Latte di Luna — Pienza", zone: "Pienza", note: "Cena antes de la procesión. Reserva nueva clave.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 5 },
-      { id: "v32", time: "21:00", type: "cultura", place: "Processione degli Scalzi — Viernes Santo", zone: "Pienza", note: "Personas encapuchadas con antorchas en silencio por las calles oscuras. Tradición medieval impactante.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
+      { id: "v32", time: "21:00", type: "cultura", place: "Processione degli Scalzi — Monticchiello", zone: "Monticchiello", note: "Personas encapuchadas con antorchas en silencio por las calles oscuras del pueblo. Tradición medieval de Viernes Santo — la procesión más auténtica de la zona. Cenar antes en Pienza (20 min en auto) y llegar a Monticchiello a las 20:45.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
     ]
   },
 
