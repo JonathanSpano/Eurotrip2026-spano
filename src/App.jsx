@@ -41,6 +41,22 @@ const TYPE_CONFIG = {
   cultura:    { icon: "🎨", label: "Cultura",    color: "#795548" },
 };
 
+// IDs de actividades ya confirmadas con ticket/reserva en mano
+const CONFIRMED_IDS = new Set(["f5", "f10", "f15", "f17", "b4", "b11", "b15"]);
+
+// Confirmaciones extra (no son actividades del itinerario pero sí reservas clave)
+const EXTRA_CONFIRMATIONS = [
+  {
+    id: "auto",
+    phase: "Florencia",
+    date: "2026-03-26",
+    time: "10:00",
+    place: "Auto DRIVALIA — Jeep Renegade",
+    note: "Retiro FLR aeropuerto 26/03 10:00 · Devolución 04/04 10:00 · Shuttle desde Arrivals · Depósito €500 tarjeta física · Cadenas nieve incluidas · Silla niño: €16/día a pagar en local.",
+    bookingRef: "CRS IT887444450 · Conf. 1068390",
+  },
+];
+
 // ── EMERGENCY OPTIONS: per city, quick activities if you have 1 free hour ──
 const EMERGENCY_OPTIONS = {
   "Madrid": [
@@ -88,7 +104,7 @@ const DAYS = [
     tip: "🚨 Prohibido siesta larga antes de las 20:30. La luz solar de tarde es tu herramienta.",
     activities: [
       { id: "m1", time: "11:30", type: "transporte", place: "Barajas → Novotel Madrid Center", zone: "Madrid Centro", note: "Traslado privado. Solicitar cuna al hacer check-in.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 10 },
-      { id: "m2", time: "13:30", type: "comida", place: "Taberna Laredo", zone: "Dr. Castelo, 30", note: "6 min caminando del hotel. Menú de mediodía de producto puro. Muy cómodo con Piero en carriola.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 12, altRestaurants: ["La Montería (frente al Retiro)", "Restaurante Hevia (Serrano 118)"] },
+      { id: "m2", time: "13:30", type: "comida", place: "Taberna Laredo", zone: "Dr. Castelo, 30", note: "6 min caminando del hotel. Menú de mediodía de producto puro. Muy cómodo con Piero en carriola.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 12, altRestaurants: ["La Montería (frente al Retiro)", "Trattoria Sostanza (opción backup)"] },
       { id: "m3", time: "16:00", type: "paseo", place: "Parque del Retiro — Palacio de Cristal", zone: "Retiro", note: "Entrar por Puerta de Madrid. Estructura de vidrio e ingeniería — Emma lo verá como 'el palacio de cristal de los cuentos'.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5, altActivities: ["Madrid Río (15 min taxi, juegos diseño)", "ABC Serrano si llueve"] },
       { id: "m4", time: "16:30", type: "kids", place: "Jardines de Cecilio Rodríguez — Pavos reales", zone: "Retiro", note: "Dentro del Retiro. Pavos reales sueltos. Emma los persigue. Pavimento liso para Piero.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 15 },
       { id: "m5", time: "19:30", type: "comida", place: "La Montería", zone: "Frente al Retiro", note: "Taberna auténtica, cero pretensiones, calidad imbatible. Cena ligera.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 8 },
@@ -98,36 +114,31 @@ const DAYS = [
   {
     date: "2026-03-21",
     city: "Madrid", phase: "Madrid",
-    title: "Shopping + Mercados Técnicos",
-    tip: "Mercado de San Miguel: solo fotos y una tapa rápida — no almorzar ahí con los niños.",
+    title: "Centro Histórico · Sol · La Latina · Sabatini",
+    tip: "El único día real en Madrid. Eje continuo: Sol → Plaza Mayor → La Latina → Sabatini. Todo a pie o metro, sin taxi.",
     activities: [
-      { id: "m7", time: "10:30", type: "compras", place: "Milla de Oro — Goya, Serrano, Jorge Juan", zone: "Barrio Salamanca", note: "Epicentro del shopping premium. Aceras amplias, perfectas para carriola. Sin apuro.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5 },
-      { id: "m8", time: "13:30", type: "comida", place: "Restaurante Hevia", zone: "Serrano, 118", note: "Donde almuerza el Madrid empresarial. Menú impecable, servicio de vieja escuela.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 20, altRestaurants: ["Taberna Laredo", "El Corte Inglés de Goya (opción rápida)"] },
-      { id: "m9", time: "16:30", type: "paseo", place: "Puerta de Alcalá → Plaza Mayor", zone: "Centro Histórico", note: "Caminata del eje institucional. Icónico y caminable.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 3 },
-      { id: "m10", time: "17:00", type: "paseo", place: "Mercado de San Miguel", zone: "Plaza Mayor", note: "Foto de la estructura de hierro + Gilda o jamón rápido. NO almorzar aquí con los niños — trampa logística.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 15 },
-      { id: "m11", time: "19:00", type: "paseo", place: "Jardines de Sabatini — Vistas Palacio Real", zone: "Ópera", note: "Paseo suave con vistas al Palacio Real. Cierre perfecto del día.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null, altActivities: ["Madrid Río si Emma necesita descarga", "ABC Serrano si llueve"] },
+      { id: "m7", time: "08:30", type: "comida", place: "Desayuno buffet Novotel", zone: "Novotel O'Donnell", note: "Segundo ancle horario del jet lag. Emma y Piero incluidos gratis. No saltear.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
+      { id: "m7b", time: "10:00", type: "transporte", place: "Metro O'Donnell → Sol", zone: "Línea 9 / L2", note: "L9 desde O'Donnell → Príncipe de Vergara → transbordo L2 → Sol. ~15 min. Alternativa: taxi directo ~€10 con carriola y bebé.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
+      { id: "m8", time: "10:30", type: "mirador", place: "Puerta del Sol — El Oso y el Madroño", zone: "Sol", note: "Kilómetro cero de España. Foto con la estatua de bronce — Emma lo va a querer tocar. Siempre hay fila pero avanza rápido.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5 },
+      { id: "m9", time: "11:00", type: "monumento", place: "Plaza Mayor", zone: "Centro Histórico", note: "Una de las plazas más impresionantes de Europa — escala monumental, soportales del s.XVII. Entrar por Arco de Cuchilleros (sin escalones).", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 3 },
+      { id: "m9b", time: "11:45", type: "paseo", place: "Mercado de San Miguel — Solo arquitectura", zone: "Plaza Mayor", note: "Entrar a ver la estructura de hierro del s.XIX — visualmente increíble. Tomar 1-2 tapas en barra (Gildas, croquetas) y salir. NO almorzar aquí con niños.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 8 },
+      { id: "m10", time: "13:00", type: "paseo", place: "Calle Cava Baja — La Latina", zone: "La Latina", note: "El eje de tapas más auténtico de Madrid. 10 min desde Plaza Mayor bajando por C/ Toledo. Tiendas de productos locales sin presión de lujo.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5 },
+      { id: "m10b", time: "13:30", type: "comida", place: "Taberna Txakolina", zone: "Cava Baja, 26 · La Latina", note: "Pintxos vascos de nivel. Sin reserva — llegar al abrir (13:30). Si hay fila: Casa Lucas (Cava Baja 30) o Juana la Loca (Plaza Puerta de Moros 4).", essential: true, carriola: false, effort: "bajo", needsReserve: false, walkMinsToNext: null, altRestaurants: ["Casa Lucas — Cava Baja 30", "Juana la Loca — Pl. Puerta de Moros 4"] },
+      { id: "m11", time: "16:00", type: "paseo", place: "Jardines de Sabatini + Palacio Real", zone: "Ópera", note: "Desde La Latina: taxi ~€6 o 15 min caminando por C/ Bailén. Jardines formales con vistas a la fachada norte del Palacio. Carriola perfecta, Emma corre libre.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5, altActivities: ["Plaza de Oriente si tienen energía (5 min a pie)", "Terraza Novotel 7ª planta si están al límite"] },
+      { id: "m11b", time: "20:00", type: "comida", place: "La Catapa", zone: "Barrio Retiro", note: "Taberna de mercado, mejor calidad/precio de la zona. Metro Ópera → Goya (~20 min). Reservar muy recomendado.", essential: false, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
     ]
   },
-  {
-    date: "2026-03-22",
-    city: "Madrid", phase: "Madrid",
-    title: "Despedida Auténtica → Vuelo a Florencia",
-    tip: "Llevar snacks para los niños en el vuelo. Llegada a Florencia ~17:00.",
-    activities: [
-      { id: "m12", time: "10:00", type: "comida", place: "Mercado de la Paz — Casa Dani", zone: "Barrio Salamanca", note: "Mercado de locales, sin turistas. La tortilla de Casa Dani: considerada la mejor de España. Pedir para llevar si hay cola.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 30 },
-      { id: "m13", time: "12:15", type: "transporte", place: "Traslado → Vuelo a Florencia (14:30)", zone: "Barajas T4", note: "Salida puntual. Llegada a Florencia ~17:00 → directo a la Residenza Alessandra.", essential: true, carriola: true, effort: "medio", needsReserve: false, walkMinsToNext: null },
-    ]
-  },
-
   // ── FLORENCIA ────────────────────────────────────────────
   {
     date: "2026-03-22",
     city: "Florencia", phase: "Florencia",
-    title: "Llegada — El Lungarno al Atardecer",
-    tip: "Primera caminata obligatoria: Lungarno al atardecer. Amplio, plano, carriola perfecta.",
+    title: "Madrid → Florencia · Llegada al Lungarno",
+    tip: "✈️ Vuelo IB/VY 14:30 Barajas T4 → Florencia ~17:00. Primera caminata: Lungarno al atardecer — carriola perfecta.",
     activities: [
-      { id: "f1", time: "17:00", type: "checkin", place: "Residenza Alessandra", zone: "Borgo SS. Apostoli", note: "Check-in. Calle tranquila pese a estar en el corazón de todo.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 3 },
-      { id: "f2", time: "17:30", type: "paseo", place: "Lungarno Acciaiuoli → Ponte Vecchio", zone: "Lungarno", note: "Calle que bordea el río. Amplia, plana, ideal carriola. Mejor vista del Ponte Vecchio al atardecer.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5, altActivities: ["Ponte Santa Trinita", "Piazza della Repubblica"] },
+      { id: "m12", time: "09:30", type: "comida", place: "Mercado de la Paz — Casa Dani", zone: "Barrio Salamanca · Madrid", note: "Mercado de locales, sin turistas. La tortilla de Casa Dani: considerada la mejor de España. Pedir para llevar si hay cola.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 30 },
+      { id: "m13", time: "12:15", type: "transporte", place: "✈️ Vuelo Madrid → Florencia · 14:30 T4", zone: "Barajas T4 · Madrid", note: "Llegar 2h antes. Iberia/Vueling desde T4. Piero y Emma: snacks en bolso de mano. Llegada GRS ~17:00.", essential: true, carriola: true, effort: "medio", needsReserve: false, walkMinsToNext: null },
+      { id: "f1", time: "17:30", type: "checkin", place: "Residenza Alessandra", zone: "Borgo SS. Apostoli · Florencia", note: "Check-in. Calle tranquila pese a estar en el corazón de todo. Solicitar cuna para Piero.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 3 },
+      { id: "f2", time: "18:00", type: "paseo", place: "Lungarno Acciaiuoli → Ponte Vecchio", zone: "Lungarno", note: "Calle que bordea el río. Amplia, plana, ideal carriola. Mejor vista del Ponte Vecchio al atardecer.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5, altActivities: ["Ponte Santa Trinita", "Piazza della Repubblica"] },
       { id: "f3", time: "20:00", type: "comida", place: "Osteria del Cinghiale Bianco", zone: "Oltrarno", note: "3 min del hotel cruzando el río. Auténtica, sin filtro turístico.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
     ]
   },
@@ -138,7 +149,7 @@ const DAYS = [
     tip: "Museo dell'Opera tiene reserva 11:30. No pedir cappuccino después de las 11 (ley italiana).",
     activities: [
       { id: "f4", time: "09:00", type: "comida", place: "Ditta Artigianale o bar de barrio", zone: "Centro", note: "Cornetto + cappuccino. No pedir cappuccino después de las 11.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 10 },
-      { id: "f5", time: "11:30", type: "monumento", place: "Museo dell'Opera del Duomo", zone: "Duomo", note: "Ver el David de Donatello (el original). Sin colas si llegás 10 min antes.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 8 },
+      { id: "f5", time: "11:30", type: "monumento", place: "Museo dell'Opera del Duomo", zone: "Duomo", note: "Ver el David de Donatello (el original). GHIBERTI PASS — Santa Reparata 11:30 EXACTO (horario fijo, irrenunciable). Acceso Baptistero: Puerta Norte. Museo: Piazza Duomo 9. ⚠️ SIN MOCHILAS — guardarlas en Piazza Duomo 38/r.", bookingRef: "87-I2L8Z8Z · SPNY4S4ESFWA", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 8 },
       { id: "f6", time: "13:00", type: "kids", place: "Fontana del Porcellino — Mercato Nuovo", zone: "Centro", note: "Emma frota el hocico al jabalí de bronce y pone moneda: asegura regreso a Florencia.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 12 },
       { id: "f7", time: "13:30", type: "comida", place: "Mercado de Sant'Ambrogio — Da Rocco", zone: "Sant'Ambrogio", note: "Trabajadores locales, comer de pie o en banquito, pasta del día. Lo más auténtico.", essential: false, carriola: false, effort: "bajo", needsReserve: false, walkMinsToNext: 15, altRestaurants: ["Trattoria da Ruggero", "Buca dell'Orafo"] },
       { id: "f8", time: "15:30", type: "paseo", place: "Barrio de Dante — callejuelas s.XIII", zone: "Centro Storico", note: "Emma busca 'escudos de piedra' en las paredes. Torre della Castagna.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 20, altActivities: ["Via de' Tornabuoni", "Piazza della Repubblica"] },
@@ -151,12 +162,12 @@ const DAYS = [
     title: "Los Médici y La Gran Plaza",
     tip: "Galería Accademia reserva 8:15 — primer turno sin multitudes. El David mide 5.17m.",
     activities: [
-      { id: "f10", time: "08:15", type: "monumento", place: "Galería de la Accademia — El David", zone: "San Marco", note: "Primer turno = sin multitudes. Emma verá 'al gigante'. El David original mide 5.17m.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 8 },
+      { id: "f10", time: "08:15", type: "monumento", place: "Galería de la Accademia — El David", zone: "San Marco", note: "Primer turno = sin multitudes. Emma verá 'al gigante'. El David original mide 5.17m. Jonathan ID76 · Ginamaria ID77 · Emma ID78 (gratuito) · Piero ID79 (gratuito).", bookingRef: "Orden 22048110 · Cod. 3847123", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 8 },
       { id: "f11", time: "10:00", type: "monumento", place: "Palazzo Medici Riccardi", zone: "San Lorenzo", note: "La Capilla dei Magi: el fresco más secreto de Florencia. Pequeño y manejable con niños.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 12 },
       { id: "f12", time: "11:30", type: "paseo", place: "Via Calzaiuoli → Piazza della Signoria", zone: "Centro", note: "Peatonal y ancha. Loggia dei Lanzi = museo gratis al aire libre con estatuas gigantes.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 15, altActivities: ["Uffizi desde afuera", "Scalinata degli Uffizi"] },
       { id: "f13", time: "13:00", type: "comida", place: "4 Leoni — Oltrarno", zone: "Oltrarno", note: "Plaza tranquila, comida honesta, excelente para el ritmo familiar.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 10, altRestaurants: ["I' Girone De' Ghiotti (panino de trufa en escalones Loggia)", "Il Latini"] },
       { id: "f14", time: "15:00", type: "paseo", place: "Oltrarno — Via Maggio + Piazza Santo Spirito", zone: "Oltrarno", note: "Talleres de marcos y restauración abiertos. La Florencia que trabaja, no la que posa.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 20 },
-      { id: "f15", time: "20:00", type: "comida", place: "Buca Mario", zone: "Centro", note: "La mejor Bistecca alla Fiorentina. Pedirla al punto (rosada).", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
+      { id: "f15", time: "19:00", type: "comida", place: "Buca Mario", zone: "Centro", note: "La mejor Bistecca alla Fiorentina. Pedirla al punto (rosada). ⚠️ Reserva para 3 personas (no 4 — Piero en brazos). Confirmado a las 19:00.", bookingRef: "#159019194", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
     ]
   },
   {
@@ -166,7 +177,7 @@ const DAYS = [
     tip: "Uffizi: sala Botticelli es la key. Con niños máximo 90 min. Reserva obligatoria.",
     activities: [
       { id: "f16", time: "09:00", type: "comida", place: "Ditta Artigianale (Via dello Sprone)", zone: "Oltrarno", note: "La mejor versión del desayuno florentino. Sin turistas, panadería artesanal.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5 },
-      { id: "f17", time: "09:30", type: "monumento", place: "Galería Uffizi", zone: "Piazza della Signoria", note: "Sala Botticelli (La Primavera, Venus) es la clave. Máx 90 min con niños.", essential: true, carriola: true, effort: "medio", needsReserve: true, walkMinsToNext: 10 },
+      { id: "f17", time: "09:30", type: "monumento", place: "Galería Uffizi", zone: "Piazza della Signoria", note: "Sala Botticelli (La Primavera, Venus) es la clave. Máx 90 min con niños. Jonathan €29 · Ginamaria €29 · Emma gratis · Piero gratis.", bookingRef: "S2KWT8Y2 · PNR Uffizi", essential: true, carriola: true, effort: "medio", needsReserve: true, walkMinsToNext: 10 },
       { id: "f18", time: "12:00", type: "paseo", place: "Corredor Vasariano exterior + Ponte Vecchio", zone: "Lungarno", note: "Ver las ventanitas redondas del corredor secreto de los Médici desde afuera. Cruzar el Ponte.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 20 },
       { id: "f19", time: "13:30", type: "comida", place: "Coquinarius", zone: "Duomo", note: "Refinado, despedida italiana. Crostini, tartufata, vino Chianti.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 25 },
       { id: "f20", time: "15:00", type: "paseo", place: "Jardín Bardini", zone: "Oltrarno", note: "Vistas bestiales de Florencia desde arriba. Más tranquilo que Boboli.", essential: false, carriola: false, effort: "medio", needsReserve: false, walkMinsToNext: 30, altActivities: ["Palazzo Pitti (jardines exteriores)", "San Miniato al Monte por Rampe del Poggi"] },
@@ -185,7 +196,7 @@ const DAYS = [
       { id: "l2", time: "12:00", type: "checkin", place: "Il Cortile di Elisa", zone: "Lucca Centro", note: "ACCIÓN CRÍTICA: Confirmar matrícula en sistema ZTL.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 8 },
       { id: "l3", time: "13:30", type: "comida", place: "Buca di Sant'Antonio", zone: "Via della Cervia, 3", note: "Estándar de oro en Lucca. Amplio, familiar.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 10, altRestaurants: ["Trattoria Da Leo (€25-35, llegar 19:30)", "Osteria Baralla"] },
       { id: "l4", time: "15:30", type: "kids", place: "Murallas de Lucca en bicicleta", zone: "Murallas", note: "Alquilar bici con silla para Emma. El mejor paseo del viaje para Piero: sin tráfico, carriola perfecta.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 20 },
-      { id: "l5", time: "20:30", type: "comida", place: "L'Imbuto — Museo de Arte Contemporáneo", zone: "Via el Loreto, 52", note: "Chef Cristiano Tomei. Cocina técnica y disruptiva. El más especial de Lucca.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
+      { id: "l5", time: "20:30", type: "comida", place: "L'Imbuto — Chef Cristiano Tomei", zone: "Fuera de las murallas (verificar dirección exacta en limbuto.it)", note: "⚠️ Restaurante mudado fuera de las murallas — confirmar dirección exacta en limbuto.it o llamar al +39 331 930 8931 antes de ir. Sin menú fijo: elegís número de platos (6-10), el chef decide. ~€130/persona sin vino.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
     ]
   },
   {
@@ -264,7 +275,7 @@ const DAYS = [
     activities: [
       { id: "v19", time: "10:30", type: "paseo", place: "Bagno Vignoni — Plaza Termal", zone: "Bagno Vignoni", note: "La plaza central ES una piscina termal de 2000 años. Parco dei Mulini: molinos en la roca.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5 },
       { id: "v20", time: "13:00", type: "comida", place: "Bistrot Languorino", zone: "Bagno Vignoni", note: "Cocina de territorio, vista al valle.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null, altRestaurants: ["Osteria del Leone", "La Bottega di Cacio (barato)"] },
-      { id: "v21", time: "15:00", type: "kids", place: "Podere Il Casale — Granja biológica", zone: "Pienza", note: "Emma ve pavos reales, cabras y cerdos. Ustedes: cata de Pecorino frente al valle.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
+      { id: "v21", time: "16:30", type: "kids", place: "Podere Il Casale — Granja biológica", zone: "Pienza", note: "Emma ve pavos reales, cabras y cerdos. Ustedes: cata de Pecorino frente al valle.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
       { id: "v22", time: "18:00", type: "descanso", place: "Regreso al hotel — Reset familiar", zone: "Val d'Orcia", note: "Noche de descanso intencional.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
     ]
   },
@@ -313,7 +324,7 @@ const DAYS = [
     title: "Vistas y Aire Libre — Domingo de Resurrección",
     tip: "Park Güell: entrar por Carretera del Carmel (punto más alto) para BAJAR el parque sin esfuerzo.",
     activities: [
-      { id: "b4", time: "09:30", type: "monumento", place: "Park Güell — Entrada Carretera del Carmel", zone: "Gràcia", note: "Entrar por el punto más alto para bajar sin esfuerzo. Tickets online obligatorios.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
+      { id: "b4", time: "09:30", type: "monumento", place: "Park Güell — Entrada Carretera del Carmel", zone: "Gràcia", note: "Entrar por el punto más alto para bajar sin esfuerzo. Jonathan €18 · Ginamaria €18 · Emma €0 · Piero €0. Acceso válido 30 min después del horario.", bookingRef: "Reserva 8025292", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
       { id: "b5", time: "13:00", type: "comida", place: "7 Portes", zone: "Puerto/Born", note: "El templo del arroz y la paella (est. 1836). Reservar con semanas de antelación.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null, altRestaurants: ["Can Culleretes (€35-45)", "El Salamanca"] },
       { id: "b6", time: "16:00", type: "paseo", place: "Montjuïc — Telefèric + Jardins de Joan Brossa", zone: "Montjuïc", note: "Subida en Telefèric. Jardines con juegos para Emma. Espacio natural con descarga total.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
     ]
@@ -336,7 +347,7 @@ const DAYS = [
     title: "Legado Gaudí + Sant Pau + Gótico",
     tip: "Sagrada Familia: tickets liberados 60 días antes (mediados de febrero). Emma y Piero entran gratis.",
     activities: [
-      { id: "b11", time: "09:00", type: "monumento", place: "Sagrada Familia — Primer turno", zone: "Eixample", note: "Reservar 60 días antes. Sin torres (menores de 6 años). Emma y Piero: ticket €0 obligatorio al comprar.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 10 },
+      { id: "b11", time: "09:00", type: "monumento", place: "Sagrada Familia — Primer turno", zone: "Eixample", note: "Jonathan €26 · Ginamaria €26 · Emma gratuito · Piero gratuito. Acceso Carrer de la Marina. Entrada NOMINAL — llevar pasaporte.", bookingRef: "Reserva 94991045", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 10 },
       { id: "b12", time: "11:30", type: "monumento", place: "Recinte Modernista de Sant Pau", zone: "Eixample", note: "Caminata por Av. Gaudí desde la Sagrada. Espacioso, tranquilo, 100% apto carriola.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 15 },
       { id: "b13", time: "14:00", type: "comida", place: "L'Arrosseria de Xàtiva", zone: "Eixample", note: "Arroces de alta calidad cerca del monumento.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 20, altRestaurants: ["El Glop Rambla (brasas catalanas)", "Cervecería Catalana"] },
       { id: "b14", time: "16:30", type: "paseo", place: "Barrio Gótico", zone: "Gótico", note: "Calles estrechas: usar portabebés para mayor agilidad. Pont del Bisbe + Plaça Sant Felip Neri.", essential: false, carriola: false, effort: "medio", needsReserve: false, walkMinsToNext: null, altActivities: ["Plaça de Sant Felip Neri (Emma juega, vos tomás café)", "Pont del Bisbe foto"] },
@@ -348,7 +359,7 @@ const DAYS = [
     title: "Ciencia + Mar",
     tip: "Xiringuito Escribà: reservar con semanas de antelación. La mejor paella del viaje.",
     activities: [
-      { id: "b15", time: "09:00", type: "monumento", place: "Casa Batlló — Entrada Gold", zone: "Eixample", note: "Emma usa tablet de Realidad Aumentada para ver 'animales' en el diseño de Gaudí.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
+      { id: "b15", time: "09:00", type: "monumento", place: "Casa Batlló — Entrada Gold", zone: "Eixample", note: "Visita Gold ~1h15. 2 adultos €43 c/u · 2 niños €0. ⚠️ Máx 15 min de tolerancia en acceso.", bookingRef: "Reserva 94638531", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
       { id: "b16", time: "12:30", type: "kids", place: "CosmoCaixa — Bosque Inundado", zone: "Zona Alta", note: "El Amazonas recreado con lluvia real dentro del museo. Emma se va a volver loca.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
       { id: "b17", time: "14:30", type: "comida", place: "Xiringuito Escribà — Nova Icária", zone: "Playa Nova Icária", note: "La mejor paella frente al mar. Reservar con semanas de antelación.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 5, altRestaurants: ["La Cova Fumada (sin reserva)", "Barraca"] },
       { id: "b18", time: "16:30", type: "kids", place: "Playa de Nova Icária", zone: "Barceloneta", note: "Arena para Emma. Paseo marítimo para Piero. El finale perfecto del viaje.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
@@ -393,7 +404,7 @@ function getPhaseColor(phase) {
   return map[phase] || { bg: "#F5F5F5", accent: "#616161", text: "#424242", light: "#EEEEEE" };
 }
 function getDayReserveAlerts(day) {
-  return day.activities.filter(a => a.needsReserve);
+  return day.activities.filter(a => a.needsReserve && !CONFIRMED_IDS.has(a.id));
 }
 
 // ============================================================
@@ -554,7 +565,7 @@ function ActivityCard({ activity, done, onToggle, colors, showWalk }) {
       <div style={{
         background: done ? "#F9F9F9" : "white",
         borderRadius: 14,
-        border: `1.5px solid ${done ? "#E0E0E0" : activity.needsReserve ? "#FF9800" : colors.light}`,
+        border: `1.5px solid ${done ? "#E0E0E0" : CONFIRMED_IDS.has(activity.id) ? "#4CAF50" : activity.needsReserve ? "#FF9800" : colors.light}`,
         overflow: "hidden",
         opacity: done ? 0.55 : 1,
         boxShadow: done ? "none" : "0 2px 8px rgba(0,0,0,0.05)"
@@ -579,9 +590,14 @@ function ActivityCard({ activity, done, onToggle, colors, showWalk }) {
               }}>
                 {activity.place}
               </div>
-              {activity.needsReserve && !done && (
+              {activity.needsReserve && !done && !CONFIRMED_IDS.has(activity.id) && (
                 <span style={{ fontSize: 10, fontWeight: 800, color: "#FF6D00", background: "#FFF3E0", padding: "1px 5px", borderRadius: 4 }}>
                   📋 RESERVAR
+                </span>
+              )}
+              {activity.needsReserve && CONFIRMED_IDS.has(activity.id) && (
+                <span style={{ fontSize: 10, fontWeight: 800, color: "#2E7D32", background: "#E8F5E9", padding: "1px 5px", borderRadius: 4 }}>
+                  🎫 CONFIRMADO
                 </span>
               )}
             </div>
@@ -650,12 +666,12 @@ function DayView({ day, doneMap, onToggle, allDays }) {
       if (filter === "essential") return a.essential;
       if (filter === "comida") return a.type === "comida";
       if (filter === "kids") return a.type === "kids" || a.carriola;
-      if (filter === "reservar") return a.needsReserve;
+      if (filter === "reservar") return a.needsReserve && !CONFIRMED_IDS.has(a.id);
       return true;
     });
   }, [day.activities, filter]);
 
-  const reserveCount = day.activities.filter(a => a.needsReserve).length;
+  const reserveCount = day.activities.filter(a => a.needsReserve && !CONFIRMED_IDS.has(a.id)).length;
   const filters = [
     { id: "all", label: "Todo" },
     { id: "essential", label: "⚡ Esencial" },
@@ -884,6 +900,119 @@ function CalendarView({ days, selectedDate, onSelectDate }) {
   );
 }
 
+
+// ── RESERVAS MASTER VIEW ──────────────────────────────────
+function ReservasView({ days, doneReservas, onToggleReserva }) {
+  const allReservas = days.flatMap(day =>
+    day.activities
+      .filter(a => a.needsReserve)
+      .map(a => ({ ...a, date: day.date, city: day.city, phase: day.phase }))
+  );
+
+  // Auto-confirmed = tienen ticket en mano; manual-confirmed = marcados por usuario
+  const confirmed = allReservas.filter(a => CONFIRMED_IDS.has(a.id));
+  const pending = allReservas.filter(a => !CONFIRMED_IDS.has(a.id) && !doneReservas[a.id]);
+  const manualDone = allReservas.filter(a => !CONFIRMED_IDS.has(a.id) && doneReservas[a.id]);
+
+  const ReservaCard = ({ a, isConfirmed, isManualDone }) => {
+    const colors = getPhaseColor(a.phase);
+    const bgColor = isConfirmed ? "#F0FFF4" : isManualDone ? "#F9F9F9" : "white";
+    const borderColor = isConfirmed ? "#4CAF50" : isManualDone ? "#E0E0E0" : colors.light;
+    return (
+      <div style={{
+        background: bgColor, borderRadius: 14,
+        border: `1.5px solid ${borderColor}`,
+        padding: "12px 14px", marginBottom: 8,
+        boxShadow: isConfirmed || isManualDone ? "none" : "0 2px 8px rgba(0,0,0,0.05)",
+        display: "flex", alignItems: "flex-start", gap: 10,
+        opacity: isManualDone ? 0.65 : 1,
+      }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 10, fontWeight: 800, color: isConfirmed ? "#2E7D32" : isManualDone ? "#BDBDBD" : colors.accent, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 2 }}>
+            {a.phase} · {formatDateShort(a.date)} · {a.time}
+          </div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: isManualDone ? "#9E9E9E" : "#1A1A1A", textDecoration: isManualDone ? "line-through" : "none", marginBottom: 3 }}>{a.place}</div>
+          {isConfirmed && a.bookingRef && (
+            <div style={{ fontSize: 10, color: "#2E7D32", fontWeight: 800, background: "#E8F5E9", borderRadius: 5, padding: "2px 7px", display: "inline-block", marginBottom: 5 }}>
+              🎫 {a.bookingRef}
+            </div>
+          )}
+          {!isManualDone && <div style={{ fontSize: 11, color: "#757575", lineHeight: 1.4 }}>{a.note}</div>}
+        </div>
+        {isConfirmed ? (
+          <div style={{ width: 30, height: 30, borderRadius: "50%", background: "#4CAF50", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, flexShrink: 0 }}>✓</div>
+        ) : (
+          <button
+            onClick={() => onToggleReserva(a.id)}
+            style={{
+              width: 30, height: 30, borderRadius: "50%",
+              border: `2px solid ${isManualDone ? "#4CAF50" : colors.accent}`,
+              background: isManualDone ? "#4CAF50" : "transparent",
+              color: isManualDone ? "white" : colors.accent,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer", fontSize: 14, flexShrink: 0
+            }}
+          >{isManualDone ? "✓" : "○"}</button>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div style={{ padding: "14px 14px 120px" }}>
+      <div style={{ fontSize: 20, fontWeight: 900, color: "#1A1A1A", marginBottom: 4 }}>📋 Reservas del Viaje</div>
+      <div style={{ fontSize: 12, color: "#9E9E9E", marginBottom: 16 }}>
+        {pending.length} pendientes · {manualDone.length + confirmed.length} confirmadas
+      </div>
+
+      {pending.length > 0 && (
+        <>
+          <div style={{ fontSize: 11, fontWeight: 800, color: "#D32F2F", letterSpacing: 1, marginBottom: 10, textTransform: "uppercase" }}>
+            🔴 Pendientes de reservar ({pending.length})
+          </div>
+          {pending.map(a => <ReservaCard key={a.id} a={a} isConfirmed={false} isManualDone={false} />)}
+        </>
+      )}
+
+      {confirmed.length > 0 && (
+        <>
+          <div style={{ fontSize: 11, fontWeight: 800, color: "#2E7D32", letterSpacing: 1, marginBottom: 10, marginTop: pending.length > 0 ? 20 : 0, textTransform: "uppercase" }}>
+            🎫 Ticket en mano ({confirmed.length + 1})
+          </div>
+          {/* Auto rental extra */}
+          {EXTRA_CONFIRMATIONS.map(a => {
+            const colors = getPhaseColor(a.phase);
+            return (
+              <div key={a.id} style={{ background: "#F0FFF4", borderRadius: 14, border: "1.5px solid #4CAF50", padding: "12px 14px", marginBottom: 8 }}>
+                <div style={{ fontSize: 10, fontWeight: 800, color: "#2E7D32", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 2 }}>
+                  {a.phase} · {formatDateShort(a.date)} · {a.time}
+                </div>
+                <div style={{ fontSize: 14, fontWeight: 800, color: "#1A1A1A", marginBottom: 3 }}>{a.place}</div>
+                <div style={{ fontSize: 10, color: "#2E7D32", fontWeight: 800, background: "#E8F5E9", borderRadius: 5, padding: "2px 7px", display: "inline-block", marginBottom: 5 }}>🎫 {a.bookingRef}</div>
+                <div style={{ fontSize: 11, color: "#757575", lineHeight: 1.4 }}>{a.note}</div>
+              </div>
+            );
+          })}
+          {confirmed.map(a => <ReservaCard key={a.id} a={a} isConfirmed={true} isManualDone={false} />)}
+        </>
+      )}
+
+      {manualDone.length > 0 && (
+        <>
+          <div style={{ fontSize: 11, fontWeight: 800, color: "#4CAF50", letterSpacing: 1, marginBottom: 10, marginTop: 20, textTransform: "uppercase" }}>
+            ✅ Marcadas como confirmadas ({manualDone.length})
+          </div>
+          {manualDone.map(a => <ReservaCard key={a.id} a={a} isConfirmed={false} isManualDone={true} />)}
+        </>
+      )}
+
+      {pending.length === 0 && confirmed.length === 0 && manualDone.length === 0 && (
+        <div style={{ textAlign: "center", padding: 40, color: "#BDBDBD" }}>Sin reservas pendientes 🎉</div>
+      )}
+    </div>
+  );
+}
+
 // ============================================================
 // MAIN APP
 // ============================================================
@@ -896,6 +1025,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("today");
   const [selectedDate, setSelectedDate] = useState(defaultDate);
   const [doneMap, setDoneMap] = useState({});
+  const [doneReservas, setDoneReservas] = useState({});
+  const toggleReserva = (id) => setDoneReservas(prev => ({ ...prev, [id]: !prev[id] }));
 
   const currentDay = DAYS.find(d => d.date === selectedDate) || DAYS[0];
 
@@ -921,6 +1052,7 @@ export default function App() {
     { id: "today", icon: "📅", label: "Hoy" },
     { id: "weekly", icon: "📋", label: "Resumen" },
     { id: "calendar", icon: "🗓️", label: "Fechas" },
+    { id: "reservas", icon: "📋", label: "Reservas" },
   ];
 
   return (
@@ -929,9 +1061,14 @@ export default function App() {
       <div style={{ background: "white", borderBottom: "1px solid #F0F0F0", padding: "14px 16px 10px", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 10px rgba(0,0,0,0.06)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div>
-            <div style={{ fontSize: 17, fontWeight: 900, color: "#1A1A1A" }}>Operación Spano</div>
+            <div style={{ fontSize: 17, fontWeight: 900, color: "#1A1A1A" }}>Operación Spano ✈️</div>
             <div style={{ fontSize: 10, color: "#BDBDBD", marginTop: 1 }}>
               {currentDay ? `${currentDay.city} · ${formatDateShort(currentDay.date)}` : ""}
+              {getTodayDate() < "2026-03-19" && (
+                <span style={{ marginLeft: 8, color: "#E65100", fontWeight: 800 }}>
+                  🗓️ {Math.ceil((new Date("2026-03-19") - new Date()) / 86400000)}d para el despegue
+                </span>
+              )}
             </div>
           </div>
           {activeTab === "today" && (
@@ -953,6 +1090,9 @@ export default function App() {
         )}
         {activeTab === "calendar" && (
           <CalendarView days={DAYS} selectedDate={selectedDate} onSelectDate={handleSelectDate} />
+        )}
+        {activeTab === "reservas" && (
+          <ReservasView days={DAYS} doneReservas={doneReservas} onToggleReserva={toggleReserva} />
         )}
       </div>
 
