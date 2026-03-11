@@ -321,22 +321,24 @@ const DAYS = [
     date: "2026-04-05",
     city: "Barcelona", phase: "Barcelona",
     title: "Vistas y Aire Libre — Domingo de Resurrección",
-    tip: "Park Güell: entrar por Carretera del Carmel (punto más alto) para BAJAR el parque sin esfuerzo.",
+    tip: "Bunkers del Carmel post Park Güell: la vista de 360° más espectacular de Barcelona. Gratis, sin turistas masivos. Uber desde Park Güell ~10 min.",
     activities: [
       { id: "b4", time: "09:30", type: "monumento", place: "Park Güell — Entrada Carretera del Carmel", zone: "Gràcia", note: "Entrar por el punto más alto para bajar sin esfuerzo. Jonathan €18 · Ginamaria €18 · Emma €0 · Piero €0. Acceso válido 30 min después del horario.", bookingRef: "Reserva 8025292", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
-      { id: "b5", time: "13:00", type: "comida", place: "7 Portes", zone: "Puerto/Born", note: "El templo del arroz y la paella (est. 1836). Reservar con semanas de antelación.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null, altRestaurants: ["Can Culleretes (€35-45)", "El Salamanca"] },
-      { id: "b6", time: "16:00", type: "paseo", place: "Montjuïc — Telefèric + Jardins de Joan Brossa", zone: "Montjuïc", note: "Subida en Telefèric. Jardines con juegos para Emma. Espacio natural con descarga total.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
+      { id: "b4b", time: "11:30", type: "paseo", place: "Bunkers del Carmel", zone: "Gràcia", note: "Ruinas de batería antiaérea de la Guerra Civil. Vista 360° de toda Barcelona: ciudad, mar y Sagrada Família. Gratis. Sin autobuses turísticos. 30–40 min arriba. Piero en portabebés para el tramo final de tierra (5 min).", essential: true, carriola: false, effort: "bajo", needsReserve: false, walkMinsToNext: null },
+      { id: "b4c", time: "12:30", type: "comida", place: "La Pepita — Gràcia", zone: "Gràcia", note: "Cocina de mercado, familiar, abre mediodía, sin reserva anticipada. 10 min caminando desde los Bunkers bajando al barrio.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
+      { id: "b5", time: "20:30", type: "comida", place: "7 Portes", zone: "Puerto/Born", note: "El templo del arroz y la paella (est. 1836). Cena de cierre del Domingo de Resurrección. ⚠️ RESERVA OBLIGATORIA — llamar con semanas de antelación.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null, altRestaurants: ["Can Culleretes (€35-45)", "El Salamanca"] },
+      { id: "b6", time: "15:30", type: "paseo", place: "Montjuïc — Jardins de Joan Brossa + Castell", zone: "Montjuïc", note: "Taxi directo a los jardines desde Gràcia (~20 min). Evitar el Telefèric: Domingo de Resurrección tiene cola de 45–60 min y la carriola no entra. Jardines abiertos, Emma corre libre, Piero en carriola en caminos planos.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
     ]
   },
   {
     date: "2026-04-06",
     city: "Barcelona", phase: "Barcelona",
     title: "El Born + Tradición — Lunes de Pascua",
-    tip: "Museu de la Xocolata: hoy exhiben esculturas de chocolate. Tradición de Lunes de Pascua.",
+    tip: "Born + Palau de la Música: el barrio más auténtico de Barcelona el Lunes de Pascua. Llegar temprano antes de que despierten los turistas.",
     activities: [
-      { id: "b7", time: "10:30", type: "kids", place: "Museu de la Xocolata", zone: "El Born", note: "Esculturas de chocolate. Tradición del día. Emma vs chocolatelandia.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5 },
-      { id: "b8", time: "12:00", type: "cultura", place: "Santa Maria del Mar + Born CCM", zone: "El Born", note: "Iglesia gótica perfecta + ruinas del s.XVIII bajo estructura industrial.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 10 },
-      { id: "b9", time: "14:00", type: "comida", place: "Cuines de Santa Caterina", zone: "El Born", note: "Cocina de mercado fresca y variada.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 15, altRestaurants: ["Bar del Convent (claustro, Emma corre)", "El Xampanyet"] },
+      { id: "b7", time: "10:30", type: "cultura", place: "Santa Maria del Mar + Born CCM", zone: "El Born", note: "Iglesia gótica más equilibrada de Barcelona + ruinas del s.XVIII bajo estructura industrial. Carriola viable en todo el recorrido.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 10 },
+      { id: "b7b", time: "12:30", type: "cultura", place: "Palau de la Música Catalana — exterior", zone: "El Born", note: "10 min caminando desde Santa Maria del Mar. Ver desde la calle: gratis, sin entrada, 15 min. Mejor esquina: Sant Pere Més Alt con Amadeu Vives. Emma lo va a ver como un castillo de cuento — fachada cubierta de mosaicos y flores de piedra.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 5 },
+      { id: "b8", time: "14:00", type: "comida", place: "Cuines de Santa Caterina", zone: "El Born", note: "Cocina de mercado fresca y variada.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: 15, altRestaurants: ["Bar del Convent (claustro, Emma corre)", "El Xampanyet"] },
       { id: "b10", time: "16:00", type: "kids", place: "Parc de la Ciutadella — Paseo en bote", zone: "Ciutadella", note: "Bote por el lago + picnic. El parque más familiar de Barcelona.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
     ]
   },
@@ -355,11 +357,11 @@ const DAYS = [
   {
     date: "2026-04-08",
     city: "Barcelona", phase: "Barcelona",
-    title: "Ciencia + Mar",
-    tip: "Xiringuito Escribà: reservar con semanas de antelación. La mejor paella del viaje.",
+    title: "Casa Batlló + Aquàrium + Mar",
+    tip: "L'Aquàrium: el túnel de tiburones es el momento WOW del día para Emma. Sin taxi largo — queda en el camino directo a la playa.",
     activities: [
       { id: "b15", time: "09:00", type: "monumento", place: "Casa Batlló — Entrada Gold", zone: "Eixample", note: "Visita Gold ~1h15. 2 adultos €43 c/u · 2 niños €0. ⚠️ Máx 15 min de tolerancia en acceso.", bookingRef: "Reserva 94638531", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: null },
-      { id: "b16", time: "12:30", type: "kids", place: "CosmoCaixa — Bosque Inundado", zone: "Zona Alta", note: "El Amazonas recreado con lluvia real dentro del museo. Emma se va a volver loca.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
+      { id: "b16", time: "11:30", type: "kids", place: "L'Aquàrium de Barcelona — Túnel de tiburones", zone: "Puerto", note: "Túnel transparente rodeado de tiburones y rayas. Impacto garantizado para Emma. Carriola viable en todo el recorrido. Taxi ~10 min desde Casa Batlló hacia el puerto — flujo directo a la playa.", essential: true, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
       { id: "b17", time: "14:30", type: "comida", place: "Xiringuito Escribà — Nova Icária", zone: "Playa Nova Icária", note: "La mejor paella frente al mar. Reservar con semanas de antelación.", essential: true, carriola: true, effort: "bajo", needsReserve: true, walkMinsToNext: 5, altRestaurants: ["La Cova Fumada (sin reserva)", "Barraca"] },
       { id: "b18", time: "16:30", type: "kids", place: "Playa de Nova Icária", zone: "Barceloneta", note: "Arena para Emma. Paseo marítimo para Piero. El finale perfecto del viaje.", essential: false, carriola: true, effort: "bajo", needsReserve: false, walkMinsToNext: null },
     ]
